@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#D8C4FF">
+<meta name="description" content="Evlilik yıldönümüne özel, seninle evlenme sebeplerimin sıralandığı küçük bir sürpriz.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%8D%3C/text%3E%3C/svg%3E">
+<title>Seninle Neden Evlendim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #4A3F42;
+    --ink-soft: rgba(74, 63, 66, 0.6);
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --shadow: 0 18px 45px rgba(160, 90, 130, 0.22), 0 4px 14px rgba(160, 90, 130, 0.12);
+    --radius: 28px;
+    --bg-transition: 1.4s;
+    --glow-1: #FF8FB8;
+    --glow-2: #FFD36E;
+    --glow-3: #B98CFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--ink);
+    background-color: #D8C4FF;
+    transition: background-color var(--bg-transition) ease;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  /* ---------- Ambient shine sweep ---------- */
+  .shine-layer {
+    position: fixed;
+    inset: -20%;
+    pointer-events: none;
+    background: linear-gradient(115deg,
+      transparent 30%,
+      rgba(255,255,255,0.55) 45%,
+      rgba(255,255,255,0.15) 50%,
+      transparent 65%);
+    background-size: 250% 250%;
+    animation: sweep 7s linear infinite;
+    mix-blend-mode: overlay;
+    z-index: 1;
+  }
+  @keyframes sweep {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+  }
+
+  /* ---------- Floating sparkles / hearts ---------- */
+  .floaters {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .floaters span {
+    position: absolute;
+    bottom: -10%;
+    font-size: 1.1rem;
+    opacity: 0;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-115vh) rotate(25deg); opacity: 0; }
+  }
+
+  /* ---------- Screens ---------- */
+  .screen {
+    position: fixed;
+    inset: 0;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    padding-top: calc(24px + env(safe-area-inset-top));
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    opacity: 1;
+    transition: opacity 0.8s ease;
+    z-index: 2;
+  }
+  .screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ---------- Splash ---------- */
+  #splash { text-align: center; gap: 12px; }
+
+  .splash-heart {
+    font-size: 40px;
+    animation: floaty 3.4s ease-in-out infinite;
+    margin-bottom: 6px;
+  }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(6deg); }
+  }
+
+  .splash-title {
+    font-family: 'Playpen Sans', 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: clamp(2.1rem, 8.6vw, 3rem);
+    line-height: 1.18;
+    letter-spacing: 0.005em;
+    max-width: 14ch;
+  }
+
+  .splash-sub {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  #startBtn { margin-top: 40px; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    font-family: 'Playpen Sans', 'Quicksand', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    background: var(--card-bg);
+    border: none;
+    border-radius: 999px;
+    padding: 16px 36px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn:active { transform: scale(0.96); }
+  .btn:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Main screen ---------- */
+  #main { gap: 0; justify-content: space-between; }
+
+  .top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 6px;
+  }
+
+  .progress {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 999px;
+    padding: 8px 18px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: background-color 0.6s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .card-zone {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    position: relative;
+  }
+
+  .card-glow {
+    position: absolute;
+    width: min(90%, 440px);
+    height: 64dvh;
+    max-height: 66dvh;
+    border-radius: calc(var(--radius) + 10px);
+    background: conic-gradient(from 0deg, var(--glow-1), var(--glow-2), var(--glow-3), var(--glow-1));
+    filter: blur(18px);
+    opacity: 0.55;
+    animation: spinGlow 6s linear infinite;
+    z-index: 0;
+  }
+  @keyframes spinGlow {
+    to { transform: rotate(360deg); }
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    min-height: 46dvh;
+    max-height: 62dvh;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 30px;
+    gap: 20px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    overflow: hidden;
+  }
+
+  .card-number {
+    font-family: 'Playpen Sans', 'Quicksand', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    transition: opacity 0.35s ease;
+  }
+
+  .reason-text {
+    font-family: 'Playpen Sans', 'Quicksand', sans-serif;
+    font-weight: 500;
+    font-size: clamp(1.4rem, 5.4vw, 1.95rem);
+    line-height: 1.4;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    overflow-wrap: break-word;
+  }
+  .card.swapping .reason-text {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .card.swapping .card-number { opacity: 0; }
+
+  .card-heart {
+    font-size: 22px;
+  }
+
+  .bottom-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 8px;
+  }
+
+  /* ---------- Toast ---------- */
+  #toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(96px + env(safe-area-inset-bottom));
+    transform: translateX(-50%) translateY(16px);
+    max-width: min(86vw, 380px);
+    background: rgba(74, 63, 66, 0.92);
+    color: #FFF8F6;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.45;
+    text-align: center;
+    padding: 14px 22px;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(60, 40, 45, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    z-index: 50;
+  }
+  #toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.15s !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="shine-layer" aria-hidden="true"></div>
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
+
+  <!-- ===== Splash ===== -->
+  <div class="screen" id="splash">
+    <div class="splash-heart" aria-hidden="true">💗</div>
+    <h1 class="splash-title">Seninle Neden Evlendim</h1>
+    <p class="splash-sub">✨ 102 küçük neden ✨</p>
+    <button class="btn" id="startBtn">💍 Başlat</button>
+  </div>
+
+  <!-- ===== Main ===== -->
+  <div class="screen hidden" id="main">
+    <div class="top-bar">
+      <div class="progress" id="progress">💖 Keşfedilenler: 0/102</div>
+    </div>
+
+    <div class="card-zone">
+      <div class="card-glow" aria-hidden="true"></div>
+      <div class="card" id="card">
+        <div class="card-number" id="cardNumber">№ —</div>
+        <p class="reason-text" id="reasonText">Hazır mısın?</p>
+        <div class="card-heart" aria-hidden="true">💕</div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <button class="btn" id="nextBtn">☀️ Başka Bir Neden...</button>
+    </div>
+  </div>
+
+  <div id="toast" role="status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script>
+    // ============ DATA ============
+    const reasonsList = [
+      "Uyurken bile beni sevdiğini söylediğin için",
+      "Yanına her yattığımda, uykunu hiç bozmadan, bana sarıldığın için",
+      "Sabaha kadar konuşabildiğimiz için",
+      "Beni güzelliğime ikna etmeye yıllarını verdiğin için",
+      "En yakın arkadaşım olduğun için",
+      "Yan yana susabildiğimiz için",
+      "Birlikte çocuklaşabildiğimiz için",
+      "Dilediğimizce şımarabildiğimiz için",
+      "Şakalarıma güldüğün için",
+      "Çok komik olduğun için",
+      "Harika bir yolculuk arkadaşı olduğun için",
+      "Şahane gülüşün için",
+      "Arkadaşlarımın biricik eniştesi olduğun için",
+      "Dedikodu yapmayı öğrendiğin ve bundan keyif aldığın için",
+      "Muhteşem bir dans partneri olduğun için",
+      "Arveles'i ben hatırlatmadan sorduğun için",
+      "Şahane bir baba olacağını hissettiğim için",
+      "Oyun arkadaşım olduğun için",
+      "Baba şakaların için",
+      "Güne seninle başlamanın verdiği enerjiyi hiçbir şeyle değiştirmeyeceğim için",
+      "Tüm kalabalıkların ortasında senin yüzünü görmenin verdiği mutluluk için",
+      "Tüm balıklar için",
+      "Başımıza gelen her şeyden el ele çıkabildiğimiz için",
+      "Alemlere damat olarak yaratıldığın için",
+      "Heyecanla anlattığın teknik konular için",
+      "İlgiyle dinlediğin, hiç ilgi alanın olmayan konular için",
+      "Tüm canlılara duyduğun şefkat için",
+      "Vicdanının sesinin yüksekliği için",
+      "Daha iyi bir dünya istediğin için",
+      "Sana sarılmanın verdiği güvene bayıldığım için",
+      "Eski ve yeni tüm sevişmelerimiz için",
+      "Yeni yerleri birlikte keşfetmenin heyecanı için",
+      "Tatilde içtiğimiz Türk kahvelerinin hiç bitmemesi için",
+      "Bunca yıl sonra hala karnımda kelebekler uçuşturduğun için",
+      "Tüm saçmalıklarıma tahammül ettiğin için",
+      "Beni olduğum gibi kabul ettiğin için",
+      "Gülümseyişin kalbimden bir parçayı güneşte kalmış çikolata gibi erittiği için",
+      "Zeki olduğun için",
+      "Kafanda hep aykırı çalışan bir kısım olduğu için",
+      "Kitapları sevdiğin için",
+      "Beni hiç bilerek kırmayacağını bildiğim için",
+      "Her fırsatta ve hala götümü ellemeye çalıştığın için",
+      "\u201CEv\u201D seninle uyuyabildiğimiz herhangi bir çatı olduğu için",
+      "Öğrenmekten hiç korkmayacağın ve vazgeçmeyeceğin için",
+      "Bana hep alan açmaya çalıştığın için",
+      "Aynı odada ayrı ayrı takılabildiğimiz için",
+      "Beni sevdiğini sık sık söylediğin için",
+      "Benden klasik bir ev hanımı olmamı beklemediğin için",
+      "Hayatı paylaşabildiğimiz için",
+      "Memleketimi sevdiğin için",
+      "Aileme sevgi ve saygı gösterebildiğin için",
+      "Korkularımı anlamaya çalıştığın için",
+      "Hastalıklarımı beraber atlatmaya gönüllü olduğun için",
+      "Beni hiç fazlalık hissettirmediğin için",
+      "Seni hiç fazlalık hissetmediğim için",
+      "Beni kıskançlıkla hiç boğmadığın için",
+      "Yerde bile uyuyakalsan elimi hiç bırakmadığın için",
+      "Araba sürerken çok seksi gözüktüğün için",
+      "Hayata dair umutlarımı yeşerttiğin için",
+      "Beni dinlediğin için",
+      "Bana hak vermediğinde karşı çıkabildiğin için",
+      "Paralel evrenlerin hepsinde hayatımda olduğunu hissettiğim için",
+      "En çaresiz anlarımda bile varlığına şükrettiğim için",
+      "Arabada dans edebildiğimiz için",
+      "Kedilerle konuştuğun için",
+      "Merhametin için",
+      "Harika bir abi olduğun için",
+      "Elinden her iş geldiği için",
+      "Hasta olduğumda beni zorla dinlendirdiğin için",
+      "Yorgunluktan gözlerin ufacık bile kalsa bana ne yapmak istediğimi sorduğun için",
+      "Uykunda konuştuğun için",
+      "Kişisel kaloriferim olduğun için",
+      "Seni bir gün bile görmezsem özlediğim için",
+      "Yanında ağlamaktan utanmadığım için",
+      "Çok güzel koktuğun için",
+      "Her şeyi bilimle açıklayabildiğin için",
+      "Birlikte büyüdüğümüz için",
+      "Çok eğlenceli yaşlılar olacağımız için",
+      "Oyuncaklarını benimle paylaştığın için",
+      "Gelecekteki çocuğumuzu utandıracağımız şeyleri konuşup güldüğümüz için",
+      "Seks hakkında konuşabildiğimiz için",
+      "Bana içini açabildiğin için",
+      "Sana her derdimi anlatabildiğim için",
+      "Yüksek lisans tezinde bana teşekkür ettiğin için",
+      "Ön lisans tezimde sana teşekkür ettiğim için",
+      "Moda'da sabahladığımız tüm geceleri gülümseyerek andığım için",
+      "Harika bir arkadaş olduğun için",
+      "Hala flörtleşebildiğimiz için",
+      "Beni çıplak gördüğünde hala ergen gibi davranabildiğin için",
+      "Benimle haberleri takip ettiğin için",
+      "Ülkemiz için en az benim kadar umutlu ve umutsuz olduğun için",
+      "Aynı yöne baktığımız için",
+      "Inside jokelarımız için",
+      "Bazen tanrısal bir el tarafından birbirimize bağlandığımızı neredeyse fiziken hissettiğim için",
+      "Seni gururla herkesle tanıştırabildiğim için",
+      "Beni sevgi ve saygıyla yanında taşıyabildiğin için",
+      "Bir odada pandemi kapanmasını atlatabildiğimiz için",
+      "Yunan heykellerini kıskandıran sırtın ve omuzların için",
+      "Çift terapisinden kaçmadığın için",
+      "Sen olduğun için",
+      "Sen uzaklardayken senin her adımın için endişe ettiğim için",
+      "Seni hep çok, hiç bitmeyen bir hasretle, özlediğim için"
+    ];
+
+    // ============ SHINY PASTEL PALETTE ============
+    const pastelColors = [
+      "#FFD1E3", // shiny rose
+      "#FFDAB4", // shiny peach
+      "#E4D4FF", // shiny lavender
+      "#C9F3E5", // shiny mint
+      "#CFE6FF", // shiny sky
+      "#FFF0B8", // shiny gold
+      "#FFC9E0", // shiny bubblegum
+      "#FFE0C2", // shiny apricot
+      "#E0D0FF", // shiny orchid
+      "#BFF0E8", // shiny aqua
+      "#D6E8FF", // shiny periwinkle
+      "#FFE8A3"  // shiny honey
+    ];
+
+    // ============ STATE ============
+    const TOTAL = reasonsList.length;
+    let deck = [];
+    let lastColorIndex = -1;
+    let clickCount = 0;
+    let finished = false;
+    const discovered = new Set();
+
+    const milestones = {
+      10: "10. Neden: Seni sevmeye doyamıyorum! 💕",
+      20: "20. Neden: Daha yolun başındayız aşkım ✨",
+      50: "50. Neden: Yarıladık ama sevgim sonsuz! 💛"
+    };
+
+    // ============ ELEMENTS ============
+    const splash = document.getElementById("splash");
+    const main = document.getElementById("main");
+    const startBtn = document.getElementById("startBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const card = document.getElementById("card");
+    const reasonText = document.getElementById("reasonText");
+    const cardNumber = document.getElementById("cardNumber");
+    const progress = document.getElementById("progress");
+    const toast = document.getElementById("toast");
+    const floaters = document.getElementById("floaters");
+
+    // ============ FLOATING DECOR ============
+    const floatEmojis = ["✨", "💕", "🌸", "💫", "🤍"];
+    function spawnFloater() {
+      const el = document.createElement("span");
+      el.textContent = floatEmojis[Math.floor(Math.random() * floatEmojis.length)];
+      el.style.left = Math.random() * 100 + "%";
+      el.style.fontSize = (0.85 + Math.random() * 1.1) + "rem";
+      const duration = 9 + Math.random() * 7;
+      el.style.animationDuration = duration + "s";
+      floaters.appendChild(el);
+      setTimeout(() => el.remove(), duration * 1000 + 500);
+    }
+    setInterval(spawnFloater, 1400);
+    for (let i = 0; i < 6; i++) setTimeout(spawnFloater, i * 500);
+
+    // ============ HELPERS ============
+    function buildDeck() {
+      deck = Array.from({ length: TOTAL }, (_, idx) => idx);
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+    }
+    buildDeck();
+
+    function randomColor() {
+      let i;
+      do {
+        i = Math.floor(Math.random() * pastelColors.length);
+      } while (i === lastColorIndex);
+      lastColorIndex = i;
+      return pastelColors[i];
+    }
+
+    function updateProgress() {
+      progress.textContent = "💖 Keşfedilenler: " + discovered.size + "/" + TOTAL;
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
+    }
+
+    // useWorker devre dışı: bazı sandbox/iframe ortamlarında blob worker
+    // oluşturma güvenlik kısıtlaması nedeniyle hataya yol açabiliyor.
+    const fireworks = (typeof confetti === "function" && confetti.create)
+      ? confetti.create(undefined, { resize: true, useWorker: false })
+      : confetti;
+
+    function fireConfetti() {
+      if (typeof fireworks !== "function") return;
+      const colors = ["#FF8FB8", "#FFD36E", "#B98CFF", "#7FE0C4", "#7EB8FF"];
+      fireworks({ particleCount: 90, spread: 75, origin: { y: 0.7 }, colors });
+      setTimeout(() => {
+        fireworks({ particleCount: 60, spread: 100, origin: { x: 0.2, y: 0.6 }, colors });
+        fireworks({ particleCount: 60, spread: 100, origin: { x: 0.8, y: 0.6 }, colors });
+      }, 250);
+    }
+
+    function showNewReason() {
+      const i = deck.pop();
+      clickCount++;
+      discovered.add(i);
+
+      card.classList.add("swapping");
+      setTimeout(() => {
+        cardNumber.textContent = "№ " + (i + 1);
+        reasonText.textContent = reasonsList[i];
+        card.classList.remove("swapping");
+      }, 350);
+
+      document.body.style.backgroundColor = randomColor();
+
+      updateProgress();
+
+      if (milestones[clickCount]) {
+        fireConfetti();
+        showToast(milestones[clickCount]);
+      }
+
+      if (deck.length === 0) {
+        showToast("102/102 — Hepsini keşfettin! ♾️");
+        setTimeout(showCompletion, 1800);
+      }
+    }
+
+    function showCompletion() {
+      finished = true;
+      fireConfetti();
+      setTimeout(fireConfetti, 600);
+
+      card.classList.add("swapping");
+      setTimeout(() => {
+        cardNumber.textContent = "💍💍💍";
+        reasonText.textContent = "Evlilik Yıldönümümüz Kutlu Olsun Sevgilim";
+        card.classList.remove("swapping");
+      }, 350);
+
+      nextBtn.textContent = "🔄 Yeniden Başla";
+      document.body.style.backgroundColor = randomColor();
+    }
+
+    function restartApp() {
+      finished = false;
+      clickCount = 0;
+      discovered.clear();
+      buildDeck();
+      nextBtn.textContent = "☀️ Başka Bir Neden...";
+      reasonText.textContent = "Hazır mısın?";
+      cardNumber.textContent = "№ —";
+      updateProgress();
+      main.classList.add("hidden");
+      splash.classList.remove("hidden");
+      document.body.style.backgroundColor = "#D8C4FF";
+    }
+
+    // ============ EVENTS ============
+    startBtn.addEventListener("click", () => {
+      splash.classList.add("hidden");
+      main.classList.remove("hidden");
+      showNewReason();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (finished) {
+        restartApp();
+      } else {
+        showNewReason();
+      }
+    });
+  </script>
+</body>
+</html>
